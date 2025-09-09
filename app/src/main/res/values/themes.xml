@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.DailyExpenseApp" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Primary color (Toolbar, etc.) -->
+        <item name="colorPrimary">#9C27B0</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">#9C27B0</item>
+
+        <!-- Optional: Light status bar icons (black icons) -->
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Optional: Navigation bar color -->
+        <item name="android:navigationBarColor">#9C27B0</item>
+    </style>
+
+    <style name="Theme.DailyExpenseApp" parent="Base.Theme.DailyExpenseApp" />
+</resources>
