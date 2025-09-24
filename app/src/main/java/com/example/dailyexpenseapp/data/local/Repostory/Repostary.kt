@@ -18,5 +18,7 @@ interface Repostary {
 
     suspend fun getAll(): Flow<List<Expense>>
 
+    suspend fun getsort(date:String): Flow<List<Expense>>
+
 
 }

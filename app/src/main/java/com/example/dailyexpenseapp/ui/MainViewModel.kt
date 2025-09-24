@@ -25,17 +25,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repostary: Repostary): ViewModel() {
 
-    private val _income= MutableLiveData<Double>()
+    private val _income= MutableStateFlow(0.00)
 
-    val income: LiveData<Double> get() = _income
+    val income: StateFlow<Double> get() = _income.asStateFlow()
 
-    private val _expense= MutableLiveData<Double>()
+    private val _expense= MutableStateFlow(0.00)
 
-    val expense: LiveData<Double> get() = _expense
+    val expense: StateFlow<Double> get() = _expense.asStateFlow()
 
-    private val _balance= MutableLiveData<Double>()
-
-    val balance: LiveData<Double> get() = _balance
+    private val _balance= MutableStateFlow(0.00)
+    val balance: StateFlow<Double> get() = _balance.asStateFlow()
 
     private val _toast = MutableSharedFlow<String>()
     val toast  =_toast.asSharedFlow()
@@ -98,20 +97,36 @@ class MainViewModel @Inject constructor(private val repostary: Repostary): ViewM
         repostary.getBalance().collect { it ->
             _balance.value=it?:0.00
         }}
+         
     }
 
 
       fun getTranList(){
          viewModelScope.launch {
          repostary.getAll()
-            .onStart { _list.value= Uistate.Loading }
+             .onStart {
+                 _list.value= Uistate.Loading
+                 delay(1000)
+             }
             .catch { it ->
             _list.value= Uistate.Error(it.message.toString())
             }
             .collect { it ->
-            _list.value= Uistate.Success(it)}
-
+                _list.value= Uistate.Success(data = it, showNoData=it.isEmpty())}
+         }
      }
-     }
 
-}
+    fun getsorttran(date: String){
+        viewModelScope.launch {
+            repostary.getsort(date)
+                .onStart { _list.value= Uistate.Loading
+                delay(1000)
+                }
+                .catch {it->
+                  _list.value=Uistate.Error(it.message.toString()) }
+                .collect { it->
+                    _list.value= Uistate.Success(data = it, showNoData=it.isEmpty())}
+                }
+        }
+    }
+

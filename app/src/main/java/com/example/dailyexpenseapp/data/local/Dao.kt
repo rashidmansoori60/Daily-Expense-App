@@ -26,5 +26,10 @@ interface Dao {
     @Query("SELECT * from Entity")
      fun getListtran(): Flow<List<Entity>>
 
+     @Query("SELECT * from Entity WHERE date=:date")
+     fun getsorttran(date:String): Flow<List<Entity>>
+
+
+
 
 }

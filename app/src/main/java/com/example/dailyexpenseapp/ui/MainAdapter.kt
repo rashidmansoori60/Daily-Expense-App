@@ -10,10 +10,11 @@ import javax.inject.Inject
 class MainAdapter @Inject constructor(var lists:List<Expense>) : RecyclerView.Adapter<MainAdapter.MainViewHoler>(){
 
     fun update(list: List<Expense>){
-        if(list!=null){
-        this.lists=list
-        }
-        notifyDataSetChanged()
+
+            this.lists=list
+            notifyDataSetChanged()
+
+
     }
 
     override fun onCreateViewHolder(

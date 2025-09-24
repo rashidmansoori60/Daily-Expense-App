@@ -10,6 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -39,15 +40,18 @@ class RepositoryImp @Inject constructor(val dao: Dao,private val expenseListMapp
 
     override suspend fun getAll(): Flow<List<Expense>> =
           flow {
-              emit(emptyList())
               dao.getListtran().collect { it ->
-                  delay(1000)
                 emit(expenseListMapper.map(it))
             }
 
-
         }.flowOn(Dispatchers.IO)
 
+    override suspend fun getsort(date: String): Flow<List<Expense>> =
+        flow {
+            dao.getsorttran(date).collect { it->
+            emit(expenseListMapper.map(it))
+            }
+        }.flowOn(Dispatchers.IO)
 
 
 }
