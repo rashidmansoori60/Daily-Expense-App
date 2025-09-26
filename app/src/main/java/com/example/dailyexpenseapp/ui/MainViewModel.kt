@@ -67,14 +67,15 @@ class MainViewModel @Inject constructor(private val repostary: Repostary): ViewM
         }
     }
 
-    suspend fun Delete(entity: Entity){
-        try {
-            repostary.delete(entity)
-            _toast.emit("Deleted!")
-        }
-        catch (e: Exception){
-            _toast.emit("Failed to delete please try again")
-        }
+     fun deletefromdb(entity: Entity){
+         viewModelScope.launch {
+             try {
+                 repostary.delete(entity)
+                 _toast.emit("Deleted!")
+             } catch (e: Exception) {
+                 _toast.emit("Failed to delete please try again,"+e.message.toString())
+             }
+         }
     }
 
      fun loadIncome(){

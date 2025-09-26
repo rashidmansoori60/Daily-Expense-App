@@ -1,8 +1,6 @@
 package com.example.dailyexpenseapp.ui
 
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -21,16 +19,20 @@ import com.example.dailyexpenseapp.ui.Uistate.Uistate
 import com.example.dailyexpenseapp.ui.fragment.AddFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
-import androidx.transition.Visibility
+import com.example.dailyexpenseapp.data.local.Entity
 import com.example.dailyexpenseapp.ui.fragment.BottomSeetFragment
+import com.example.dailyexpenseapp.ui.mapper.EntityMapper
+import javax.inject.Inject
+
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity:AppCompatActivity(), DeleteInterface {
 
     private val mainViewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var entityMapper: EntityMapper
+
 
     private lateinit var adapter: MainAdapter
     private lateinit var binding: ActivityMainBinding
@@ -56,8 +58,12 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
     }
 
+    override fun deleteentity(entity: Entity) {
+        mainViewModel.deletefromdb(entity)
+    }
+
     private fun setupUI() {
-        adapter = MainAdapter(emptyList())
+        adapter = MainAdapter(emptyList(),this,entityMapper)
         binding.transactionRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.transactionRecyclerView.adapter = adapter
     }
@@ -144,4 +150,6 @@ class MainActivity : AppCompatActivity() {
             "₹%.2f".format(this)
         }
     }
+
+
 }

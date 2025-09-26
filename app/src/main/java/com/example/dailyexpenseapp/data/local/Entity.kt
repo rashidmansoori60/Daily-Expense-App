@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 @Entity
 data class Entity(
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
-    var title: String? = null,
-    var amount: Double? = null,
-    var type: String? = null,
-    var notes: String? = null,
-    var date: String? = null,
-    var time: String? = null
+    var id: Int = 0,
+    var title: String? = "",
+    var amount: Double? =0.0,
+    var type: String? = "",
+    var notes: String? ="",
+    var date: String? = "",
+    var time: String? = ""
 )

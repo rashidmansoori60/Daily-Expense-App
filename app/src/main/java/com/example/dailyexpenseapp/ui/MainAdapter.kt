@@ -2,12 +2,14 @@ package com.example.dailyexpenseapp.ui
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dailyexpenseapp.databinding.ItemBinding
+import com.example.dailyexpenseapp.ui.mapper.EntityMapper
 import com.example.dailyexpenseapp.ui.model.Expense
 import javax.inject.Inject
 
-class MainAdapter @Inject constructor(var lists:List<Expense>) : RecyclerView.Adapter<MainAdapter.MainViewHoler>(){
+class MainAdapter @Inject constructor(private var lists:List<Expense>,private val deleteInterface: DeleteInterface,private val entityMapper: EntityMapper) : RecyclerView.Adapter<MainAdapter.MainViewHoler>(){
 
     fun update(list: List<Expense>){
 
@@ -31,6 +33,21 @@ class MainAdapter @Inject constructor(var lists:List<Expense>) : RecyclerView.Ad
         position: Int
     ) {
          var list=lists[position]
+
+        holder.itemView.setOnLongClickListener {
+            AlertDialog.Builder(holder.itemView.context)
+                .setTitle("Delete!")
+                .setMessage("Are you sure want to delete?")
+                .setPositiveButton("Delete") { dialog,_ ->
+                      deleteInterface.deleteentity(entityMapper.map(list))
+                    dialog.dismiss()
+
+                }.setNegativeButton("Cancle"){dialog,_ ->
+                    dialog.dismiss()
+
+                }.show()
+                true
+        }
          holder.binding.tvTitle.text=list.title
          holder.binding.tvDateTime.text="${list.date},${list.time}"
          holder.binding.tvType.text=list.type
